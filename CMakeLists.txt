@@ -54,21 +54,8 @@ if(${PROJECT_NAME}_SUPERBUILD)
 endif()
 
 FIND_PACKAGE(OpenCV	REQUIRED )
+INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 set (REQUIRED_LIBRARIES ${OpenCV_LIBS})
-
-set(ArUco_INCLUDE_DIRS
-  ${OpenCV_INCLUDE_DIRS}
-  src
-  )
-INCLUDE_DIRECTORIES(${ArUco_INCLUDE_DIRS})
-
-set(ArUco_LIBRARIES
-  ${OpenCV_LIBRARIES}
-  )
-
-set(ArUco_LINK_DIR
-  ${OpenCV_DIR}/lib
-  )
 
 IF(EXISTS ${GLUT_PATH})
     INCLUDE_DIRECTORIES(${GLUT_PATH}/include)
@@ -121,6 +108,12 @@ ADD_CUSTOM_TARGET(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/c
 
 CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/config.cmake.in" "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake")
 INSTALL(FILES "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake" DESTINATION lib/cmake/ )
+
+# ----------------------------------------------------------------------------
+# create configuration file from .in file
+# ----------------------------------------------------------------------------
+
+CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/ArUcoConfig.cmake.in" "${PROJECT_BINARY_DIR}/ArUcoConfig.cmake")
 
 # ----------------------------------------------------------------------------
 #   Program Optimization and debug (Extracted from OpenCV)
