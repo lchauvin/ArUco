@@ -121,7 +121,7 @@ void MarkerDetector::detect ( const  cv::Mat &input,vector<Marker> &detectedMark
 
 
     //it must be a 3 channel image
-    if ( input.type() ==CV_8UC3 )   cv::cvtColor ( input,grey,CV_BGR2GRAY );
+    if ( input.type() ==CV_8UC3 )   cv::cvtColor ( input,grey,COLOR_BGR2GRAY );
     else     grey=input;
 
 

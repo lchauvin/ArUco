@@ -269,7 +269,7 @@ void vIdle()
         TheVideoCapturer.retrieve( TheInputImage);
         TheUndInputImage.create(TheInputImage.size(),CV_8UC3);
         //by deafult, opencv works in BGR, so we must convert to RGB because OpenGL in windows preffer
-        cv::cvtColor(TheInputImage,TheInputImage,CV_BGR2RGB);
+        cv::cvtColor(TheInputImage,TheInputImage,COLOR_BGR2RGB);
         //remove distorion in image
         cv::undistort(TheInputImage,TheUndInputImage, TheCameraParams.CameraMatrix,TheCameraParams.Distorsion);
         //detect markers
