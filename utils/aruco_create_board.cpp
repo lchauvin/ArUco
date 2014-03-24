@@ -36,7 +36,7 @@ int main(int argc,char **argv)
 {
     try {
         if (argc<4) {
-            cerr<<"Usage: X:Y boardImage.png boardConfiguration.yml [pixSize] [Type(0: panel,1: chessboard, 2: frame)] [interMarkerDistance(0,1)]"<<endl;
+            cerr<<"Usage: X:Y boardImage.png boardConfiguration.yml [pixSize] [Type(0: panel,1: chessboard, 2: frame)]"<<endl;
             return -1;
         }
         int XSize,YSize;
@@ -45,12 +45,12 @@ int main(int argc,char **argv)
             return -1;
         }
         int pixSize=100;
-        float interMarkerDistance=0.2;
-        bool isChessBoard=false;
+        //float interMarkerDistance=0.2;
+        //bool isChessBoard=false;
 	int typeBoard=0;
         if (argc>=5) pixSize=atoi(argv[4]);
         if (argc>=6) typeBoard=atoi(argv[5]);
-        if (argc>=7) interMarkerDistance=atoi(argv[6]);
+        //if (argc>=7) interMarkerDistance=atoi(argv[6]);
         aruco::BoardConfiguration BInfo;
         Mat BoardImage;
         if (typeBoard==0)

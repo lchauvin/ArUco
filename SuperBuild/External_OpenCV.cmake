@@ -1,0 +1,39 @@
+set(extProjName "OpenCV")
+
+set(OPENCV_GIT_REPO "${git_protocol}://code.opencv.org/opencv.git")
+set(OPENCV_GIT_TAG "623b1db8d18d46dd0a64a8e3fc17c7b26364fb2d")
+
+if(NOT DEFINED OpenCV_DIR)
+  set(OpenCV_DEPEND OpenCV)
+  set(proj OpenCV)
+
+  ExternalProject_add(${proj}
+    SOURCE_DIR ${proj}
+    BINARY_DIR ${proj}-build
+
+    GIT_REPOSITORY ${OPENCV_GIT_REPO}
+    GIT_TAG ${OPENCV_GIT_TAG}
+
+    CMAKE_GENERATOR ${gen}
+
+    CMAKE_ARGS
+      ${CMAKE_OSX_EXTERNAL_PROJECT_ARGS}
+      ${COMMON_EXTERNAL_PROJECT_ARGS}
+      -DBUILD_DOCS:BOOL=OFF
+      -DBUILD_EXAMPLES:BOOL=OFF
+      -DBUILD_NEW_PYTHON_SUPPORT:BOOL=OFF
+      -DBUILD_PACKAGE:BOOL=OFF
+      -DBUILD_TESTS:BOOL=OFF
+      -DWITH_FFMPEG:BOOL=ON
+      -DBUILD_SHARED_LIBS:BOOL=ON
+      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    INSTALL_COMMAND ""
+    )
+
+  set(OpenCV_ROOT_DIR ${CMAKE_BINARY_DIR}/${proj}-build)
+  set(OpenCV_DIR ${CMAKE_BINARY_DIR}/${proj}-build)
+
+endif(NOT DEFINED OpenCV_DIR)

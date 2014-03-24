@@ -3,7 +3,7 @@
 # ----------------------------------------------------------------------------
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-PROJECT(aruco)
+PROJECT(ArUco)
 set(PROJECT_VERSION "1.2.4")
 string(REGEX MATCHALL "[0-9]" PROJECT_VERSION_PARTS "${PROJECT_VERSION}")
 list(GET PROJECT_VERSION_PARTS 0 PROJECT_VERSION_MAJOR)
@@ -44,9 +44,18 @@ OPTION(BUILD_SHARED_LIBS 	"Set to OFF to build static libraries" ON)
 #   Find Dependencies
 # ----------------------------------------------------------------------------
 
-FIND_PACKAGE(OpenCV 	REQUIRED )
-set (REQUIRED_LIBRARIES ${OpenCV_LIBS})
+option(${PROJECT_NAME}_SUPERBUILD "Build ${PROJECT_NAME} and the projects if depends on via SuperBuild.cmake." ON)
+mark_as_advanced(${PROJECT_NAME}_SUPERBUILD)
+if(${PROJECT_NAME}_SUPERBUILD)
+  if(NOT OpenCV_DIR)
+    include("${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild.cmake")
+    return()
+  endif()
+endif()
 
+FIND_PACKAGE(OpenCV	REQUIRED )
+INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
+set (REQUIRED_LIBRARIES ${OpenCV_LIBS})
 
 IF(EXISTS ${GLUT_PATH})
     INCLUDE_DIRECTORIES(${GLUT_PATH}/include)
@@ -99,9 +108,6 @@ ADD_CUSTOM_TARGET(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/c
 
 CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/config.cmake.in" "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake")
 INSTALL(FILES "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake" DESTINATION lib/cmake/ )
-
-
-
 
 # ----------------------------------------------------------------------------
 #   Program Optimization and debug (Extracted from OpenCV)

@@ -174,7 +174,7 @@ void MarkerDetector::detect ( const  cv::Mat &input,vector<Marker> &detectedMark
                 MarkerCanditates[i][c].y=MarkerCanditates[i][c].y*red_den+offInc;
             }
             //do the same with the the contour points
-            for ( int c=0;c<MarkerCanditates[i].contour.size();c++ )
+            for ( unsigned int c=0;c<MarkerCanditates[i].contour.size();c++ )
             {
                 MarkerCanditates[i].contour[c].x=MarkerCanditates[i].contour[c].x*red_den+offInc;
                 MarkerCanditates[i].contour[c].y=MarkerCanditates[i].contour[c].y*red_den+offInc;
@@ -272,8 +272,8 @@ void MarkerDetector::detectRectangles(const cv::Mat &thresImg,vector<MarkerCandi
 {
     vector<MarkerCandidate>  MarkerCanditates;
     //calcualte the min_max contour sizes
-    int minSize=_minSize*std::max(thresImg.cols,thresImg.rows)*4;
-    int maxSize=_maxSize*std::max(thresImg.cols,thresImg.rows)*4;
+    unsigned int minSize=_minSize*std::max(thresImg.cols,thresImg.rows)*4;
+    unsigned int maxSize=_maxSize*std::max(thresImg.cols,thresImg.rows)*4;
     std::vector<std::vector<cv::Point> > contours2;
     std::vector<cv::Vec4i> hierarchy2;
 
@@ -493,7 +493,7 @@ void findCornerPointsInContour(const vector<cv::Point2f>& points,const vector<cv
 int findDeformedSidesIdx(const vector<cv::Point> &contour,const vector<int> &idxSegments)
 {
     float distSum[4]={0,0,0,0};
-    cv::Scalar colors[4]={cv::Scalar(0,0,255),cv::Scalar(255,0,0),cv::Scalar(0,255,0),cv::Scalar(111,111,0)};
+    //cv::Scalar colors[4]={cv::Scalar(0,0,255),cv::Scalar(255,0,0),cv::Scalar(0,255,0),cv::Scalar(111,111,0)};
 
     for (int i=0;i<3;i++) {
         cv::Point p1=contour[ idxSegments[i]];
@@ -501,7 +501,7 @@ int findDeformedSidesIdx(const vector<cv::Point> &contour,const vector<int> &idx
         float inv_den=1./ sqrt(float(( p2.x-p1.x)*(p2.x-p1.x)+ (p2.y-p1.y)*(p2.y-p1.y)));
         //   d=|v^^·r|=(|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|)/(sqrt((x_2-x_1)^2+(y_2-y_1)^2)).
 //         cerr<<"POSS="<<idxSegments[i]<<" "<<idxSegments[i+1]<<endl;
-        for (size_t j=idxSegments[i];j<idxSegments[i+1];j++) {
+        for (int j=idxSegments[i];j<idxSegments[i+1];j++) {
             float dist=std::fabs( float(  (p2.x-p1.x)*(p1.y-contour[j].y)-  (p1.x-contour[j].x)*(p2.y-p1.y)) )*inv_den;
             distSum[i]+=dist;
 //             cerr<< dist<<" ";
@@ -517,7 +517,7 @@ int findDeformedSidesIdx(const vector<cv::Point> &contour,const vector<int> &idx
     cv::Point p2=contour[ idxSegments[3]];
     float inv_den=1./ std::sqrt(float(( p2.x-p1.x)*(p2.x-p1.x)+ (p2.y-p1.y)*(p2.y-p1.y)));
     //   d=|v^^·r|=(|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|)/(sqrt((x_2-x_1)^2+(y_2-y_1)^2)).
-    for (size_t j=0;j<idxSegments[0];j++)
+    for (int j=0;j<idxSegments[0];j++)
         distSum[3]+=std::fabs(   float((p2.x-p1.x)*(p1.y-contour[j].y)-  (p1.x-contour[j].x)*(p2.y-p1.y)))*inv_den;
     for (size_t j=idxSegments[3];j<contour.size();j++)
         distSum[3]+=std::fabs(   float((p2.x-p1.x)*(p1.y-contour[j].y)-  (p1.x-contour[j].x)*(p2.y-p1.y)))*inv_den;
@@ -583,7 +583,7 @@ bool MarkerDetector::warp_cylinder ( Mat &in,Mat &out,Size size, MarkerCandidate
 
     //instead of removing perspective distortion  of the rectangular region
     //given by the rectangle, we enlarge it a bit to include the deformed parts
-    cv::Point2f center=mcand.getCenter();
+    //cv::Point2f center=mcand.getCenter();
     Point2f enlargedRegion[4];
     for (int i=0;i<4;i++) enlargedRegion[i]=mcand[i];
     if (defrmdSide==0) {
@@ -840,7 +840,7 @@ void MarkerDetector::interpolate2Dline( const std::vector< Point >& inPoints, Po
     
     if( maxX-minX > maxY-minY ) {
       // Ax + C = y
-      for (int i=0; i<inPoints.size(); i++) {
+      for (unsigned int i=0; i<inPoints.size(); i++) {
 
 	  A.at<float>(i, 0) = inPoints[i].x;
 	  A.at<float>(i, 1) = 1.;
@@ -855,7 +855,7 @@ void MarkerDetector::interpolate2Dline( const std::vector< Point >& inPoints, Po
     }
     else {
       // By + C = x
-      for (int i=0; i<inPoints.size(); i++) {
+      for (unsigned int i=0; i<inPoints.size(); i++) {
 
 	  A.at<float>(i, 0) = inPoints[i].y;
 	  A.at<float>(i, 1) = 1.;

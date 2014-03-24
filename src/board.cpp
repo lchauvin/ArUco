@@ -82,7 +82,7 @@ void BoardConfiguration::saveToFile(cv::FileStorage &fs)throw (cv::Exception) {
         fs << "{:" << "id" << at(i).id ;
 
         fs<<"corners"<< "[:";
-        for (int c=0;c<at(i).size();c++)
+        for (unsigned int c=0;c<at(i).size();c++)
             fs<<at(i)[c];
         fs<<"]";
         fs <<  "}";
@@ -311,7 +311,7 @@ void Board::saveToFile(string filePath)throw(cv::Exception)
     {
         fs << "{:" << "id" << at(i).id ;
         fs<<"corners"<< "[:";
-        for (int c=0;c<at(i).size();c++)
+        for (unsigned int c=0;c<at(i).size();c++)
 	      fs<<at(i)[c];
         fs<<"]";
         fs <<  "}";

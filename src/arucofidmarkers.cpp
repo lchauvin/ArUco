@@ -158,7 +158,7 @@ cv::Mat  FiducidalMarkers::createBoardImage_ChessBoard( Size gridSize,int Marker
     Mat tableImage(sizeY,sizeX,CV_8UC1);
     tableImage.setTo(Scalar(255));
     TInfo.mInfoType=BoardConfiguration::PIX;
-    int CurMarkerIdx=0;
+    unsigned int CurMarkerIdx=0;
     for (int y=0;y<gridSize.height;y++) {
 
         bool toWrite;
@@ -408,7 +408,7 @@ int FiducidalMarkers::analyzeMarkerImage(Mat &grey,int &nRotations)
 bool FiducidalMarkers::correctHammMarker(Mat &bits)
 {
     //detect this lines with errors
-    bool errors[4];
+    //bool errors[4];
     int ids[4][5]=
     {
         {
@@ -440,8 +440,8 @@ bool FiducidalMarkers::correctHammMarker(Mat &bits)
                 sum+=  bits.at<uchar>(y,x) == ids[p][x]?0:1;
             if (minSum>sum) minSum=sum;
         }
-        if (minSum!=0) errors[y]=true;
-        else errors[y]=false;
+        //if (minSum!=0) errors[y]=true;
+        //else errors[y]=false;
     }
 
     return true;
@@ -458,7 +458,7 @@ int FiducidalMarkers::detect(const Mat &in,int &nRotations)
     assert(in.rows==in.cols);
     Mat grey;
     if ( in.type()==CV_8UC1) grey=in;
-    else cv::cvtColor(in,grey,CV_BGR2GRAY);
+    else cv::cvtColor(in,grey,COLOR_BGR2GRAY);
     //threshold image
     threshold(grey, grey,125, 255, THRESH_BINARY|THRESH_OTSU);
 
@@ -474,7 +474,7 @@ int FiducidalMarkers::detect(const Mat &in,int &nRotations)
         return -1;*/
 }
 
-vector<int> FiducidalMarkers::getListOfValidMarkersIds_random(int nMarkers,vector<int> *excluded) throw (cv::Exception)
+vector<int> FiducidalMarkers::getListOfValidMarkersIds_random(unsigned int nMarkers,vector<int> *excluded) throw (cv::Exception)
 {
 
     if (excluded!=NULL)
